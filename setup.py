@@ -35,17 +35,17 @@ def parse_requirements(filename, parent=None):
 # Avoid byte-compiling the shipped template
 sys.dont_write_bytecode = True
 gh = 'https://github.com/reubano'
-project = 'hdxscraper-fts'
+project = 'hdxscraper-hdro'
 
 config = {
     'name': project,
-    'description': 'Collector for the Financial Tracking Service (FTS) API',
+    'description': 'Collector for the UN Human Development Report Office (HDRO) API',
     'long_description': open('README.rst', 'rt').read(),
     'author': 'Reuben Cummings',
     'url': '%s/%s' % (gh, project),
     'download_url': '%s/%s/downloads/%s*.tgz' % (gh, project, project),
     'author_email': 'reubano@gmail.com',
-    'version': '0.6.0',
+    'version': '0.6.1',
     'install_requires': parse_requirements('requirements.txt'),
     'classifiers': [
         'Development Status :: 4 - Beta',

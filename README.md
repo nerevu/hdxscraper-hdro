@@ -1,6 +1,6 @@
 ## UN OCHA FTS API Collector
 
-Collector for the [Financial Tracking Service (FTS) API](https://fts.unocha.org/).
+Collector for the [UN Human Development Report Office API](http://hdr.undp.org/en).
 
 ## Setup
 
