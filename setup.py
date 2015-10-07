@@ -45,7 +45,7 @@ config = {
     'url': '%s/%s' % (gh, project),
     'download_url': '%s/%s/downloads/%s*.tgz' % (gh, project, project),
     'author_email': 'reubano@gmail.com',
-    'version': '0.6.0',
+    'version': '0.6.1',
     'install_requires': parse_requirements('requirements.txt'),
     'classifiers': [
         'Development Status :: 4 - Beta',
