@@ -22,7 +22,6 @@ import scraperwiki
 from os import environ, path as p
 from email.mime.text import MIMEText
 
-from urllib2 import urlopen
 from httplib import HTTPConnection
 from ijson import items
 
