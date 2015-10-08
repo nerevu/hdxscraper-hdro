@@ -24,7 +24,7 @@ class HDRO(db.Model, ValidationMixin):
         db.DateTime, nullable=False, default=dt.utcnow(), onupdate=dt.utcnow())
 
     # other keys
-    rid = db.Column(db.String(16), nullable=False, index=True)
+    rid = db.Column(db.String(16), nullable=False, index=True, unique=True)
     country = db.Column(db.String(32), nullable=False)
     indicator = db.Column(db.String(128), nullable=False)
     value = db.Column(db.Numeric, nullable=False)
