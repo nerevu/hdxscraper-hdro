@@ -84,8 +84,8 @@ def gen_data(config, start_year=None, end_year=None):
     paths = config['DATA_LOCATIONS']
     headers = {'Content-Type': 'application/json'}
 
-    rs = [grequests.get(url, headers=headers) for _ in xrange(3)]
-    data = grequests.map(rs, True, 3)
+    rs = [grequests.get(url, stream=True, headers=headers) for _ in xrange(3)]
+    data = [r.raw for r in grequests.map(rs, stream=True, size=3)]
 
     country_names = items(data[0], paths['country_names']).next()
     ind_names = items(data[1], paths['ind_names']).next()
