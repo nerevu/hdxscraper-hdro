@@ -21,6 +21,7 @@ import scraperwiki
 import grequests
 
 from os import environ, path as p
+from datetime import datetime as dt
 from email.mime.text import MIMEText
 
 from ijson import items
@@ -80,6 +81,8 @@ def run_or_schedule(job, schedule=False, exception_handler=None):
 def gen_data(config, start_year=None, end_year=None):
     """Generates historical or current data"""
     # url = 'file://%s' % p.join(_parentdir, 'data.json')
+    end_year = int(end_year or dt.now().year)
+    start_year = start_year or end_year - 1
     url = config['BASE_URL']
     paths = config['DATA_LOCATIONS']
     headers = {'Content-Type': 'application/json'}
