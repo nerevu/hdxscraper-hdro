@@ -18,11 +18,11 @@ import schedule as sch
 import smtplib
 import logging
 import scraperwiki
+import grequests
 
 from os import environ, path as p
 from email.mime.text import MIMEText
 
-from httplib import HTTPConnection
 from ijson import items
 
 _basedir = p.dirname(__file__)
@@ -42,8 +42,8 @@ def send_email(_to, _from=None, subject=None, text=None):
     msg = MIMEText(text)
     msg['Subject'], msg['From'], msg['To'] = subject, _from, _to
 
-    # Send the message via our own SMTP server, but don't
-    # include the envelope header.
+    # Send the message via our own SMTP server, but don't include the envelope
+    # header.
     s = smtplib.SMTP('localhost')
     s.sendmail(_from, [_to], msg.as_string())
     s.quit()
@@ -82,19 +82,14 @@ def gen_data(config, start_year=None, end_year=None):
     # url = 'file://%s' % p.join(_parentdir, 'data.json')
     url = config['BASE_URL']
     paths = config['DATA_LOCATIONS']
-    conn = HTTPConnection(url.replace('http://', ''))
+    headers = {'Content-Type': 'application/json'}
 
-    conn.request('GET', '/')
-    country_data = conn.getresponse()
-    country_names = items(country_data, paths['country_names']).next()
+    rs = [grequests.get(url, stream=True, headers=headers) for _ in xrange(3)]
+    data = [r.raw for r in grequests.map(rs, stream=True, size=3)]
 
-    conn.request('GET', '/')
-    ind_name_data = conn.getresponse()
-    ind_names = items(ind_name_data, paths['ind_names']).next()
-
-    conn.request('GET', '/')
-    ind_value_data = conn.getresponse()
-    ind_items = items(ind_value_data, paths['ind_values'])
+    country_names = items(data[0], paths['country_names']).next()
+    ind_names = items(data[1], paths['ind_names']).next()
+    ind_items = items(data[2], paths['ind_values'])
 
     for country_code, ind_code, year, ind_value in ind_items:
         year, ind_value = int(year), float(ind_value)

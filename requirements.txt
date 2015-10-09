@@ -18,3 +18,5 @@ requests==2.7.0
 scraperwiki==0.4.1
 schedule==0.3.2
 tabutils == 0.13.0
+gevent==1.0.1
+-e git+https://github.com/agsimeonov/grequests@master#egg=grequests
