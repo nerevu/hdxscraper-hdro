@@ -28,7 +28,7 @@ def parse_requirements(filename, parent=None):
 
         if candidate.startswith('-r'):
             for item in parse_requirements(candidate[2:].strip(), filepath):
-                    yield item
+                yield item
         else:
             yield candidate
 
