@@ -15,6 +15,7 @@ Collector for the [UN Human Development Report Office API](http://hdr.undp.org/e
 *ScraperWiki Box*
 
     make setup
+    source venv/bin/activate
     manage -m Scraper init
 
 ## Usage
