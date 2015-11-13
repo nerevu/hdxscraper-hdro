@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Creates private datasets in CKAN
+# usage bin/upload
+
+if [ $# -gt 0 ]; then
+  if [ "$1" == 'prod' ]; then
+    URL=`printenv CKAN_PROD_URL`
+  else
+    URL=`printenv CKAN_REMOTE_URL`
+  fi
+else
+  URL=`printenv CKAN_REMOTE_URL`
+fi
+
+BASE="http://data.undp.org/resource"
+PACKAGE="human-development-index-trends"
+CSV="https://ds-ec2.scraperwiki.com/gzk5p3z/tbb2ribak1ktkqp/cgi-bin/csv/HDRO.csv"
+NAME="human-development-report-office-indicators"
+OID="undp-human-development-reports-office"
+TSOURCE="United Nations Development Programme"
+
+{
+  read
+  while read -r line || [[ -n "$line" ]]; do
+    IFS=$'\t'
+    ROW=($line)
+
+    ckanny pk.create \
+      -ps "$TSOURCE"
+      -t "${ROW[0]}"
+      -n "${ROW[0]}"
+      -f "${BASE}/${ROW[1]}.csv"
+      -S "${ROW[2]}"
+      -e "${ROW[3]}"
+      -r "$URL"
+      "$OID"
+  done
+} < "$1"
+
+ckanny fs.upload -p "$PACKAGE" -n "$NAME" -r "$URL" "$CSV"

@@ -4,17 +4,18 @@ from __future__ import (
     unicode_literals)
 
 import os.path as p
+import swutils
+import config
 
 from subprocess import call
 from datetime import datetime as dt
 from functools import partial
 
-from pprint import pprint
 from flask import current_app as app
 from flask.ext.script import Manager
-from tabutils.fntools import chunk
+from tabutils.process import merge
 
-from app import create_app, db, utils, models
+from app import create_app, db, utils, models, __title__
 
 manager = Manager(create_app)
 manager.add_option('-m', '--mode', default='Development')
@@ -82,105 +83,13 @@ def setup():
 
 
 @manager.option('-s', '--start', help='the start year', default=1980)
-@manager.option('-e', '--end', help='the end year', default=None)
-def backfill(start, end):
-    """Populates db with historical data"""
-    limit = 0
-
-    with app.app_context():
-        table_name = app.config['TABLE']
-        table = getattr(models, table_name)
-        row_limit = app.config['ROW_LIMIT']
-        chunk_size = min(row_limit or 'inf', app.config['CHUNK_SIZE'])
-        debug, test = app.config['DEBUG'], app.config['TESTING']
-
-        if test:
-            createdb()
-
-        args = [app.config, start, end]
-
-        for records in chunk(utils.gen_data(*args), chunk_size):
-            count = len(records)
-            limit += count
-
-            if debug:
-                print(
-                    'Inserting %s records into the %s table...' % (
-                        count, table_name))
-
-            if test:
-                pprint(records)
-
-            db.engine.execute(table.__table__.insert(), records)
-
-            if row_limit and limit >= row_limit:
-                break
-
-        if debug:
-            print(
-                'Successfully inserted %s records into the %s table!' % (
-                    limit, table_name))
-
-
-def populate():
-    """Populates db with most recent data"""
-    limit = 0
-
-    with app.app_context():
-        table_name = app.config['TABLE']
-        table = getattr(models, table_name)
-        rid = app.config['RECORD_ID']
-        row_limit = app.config['ROW_LIMIT']
-        chunk_size = min(row_limit or 'inf', app.config['CHUNK_SIZE'])
-        debug, test = app.config['DEBUG'], app.config['TESTING']
-
-        if test:
-            createdb()
-
-        data = utils.gen_data(app.config)
-
-        for records in chunk(data, chunk_size):
-            # delete records if already in db
-            ids = [r[rid] for r in records]
-            q = table.query.filter(getattr(table, rid).in_(ids))
-            del_count = q.delete(synchronize_session=False)
-
-            # necessary to prevent `sqlalchemy.exc.OperationalError:
-            # (sqlite3.OperationalError) database is locked` error
-            db.session.commit()
-
-            if debug:
-                print(
-                    'Deleted %s records from the %s table...' % (
-                        del_count, table_name))
-
-            in_count = len(records)
-            limit += in_count
-
-            if debug:
-                print(
-                    'Inserting %s records into the %s table...' % (
-                        in_count, table_name))
-
-            if test:
-                pprint(records)
-
-            db.engine.execute(table.__table__.insert(), records)
-
-            if row_limit and limit >= row_limit:
-                break
-
-        if debug:
-            print(
-                'Successfully inserted %s records into the %s table!' % (
-                    limit, table_name))
-
-
-@manager.command
-def init():
+@manager.option('-e', '--end', help='the end year', default=dt.now().year)
+def init(start, end):
     """Initializes db with historical data"""
     with app.app_context():
-        job = partial(backfill, 1999, dt.now().year)
+        extra = {'models': models, 'end': end, 'start': start}
+        kwargs = merge([app.config, extra])
+        job = partial(swutils.populate, utils.gen_data, db.engine, **kwargs)
         utils.run_or_schedule(job, False, utils.exception_handler)
 
 
@@ -188,8 +97,25 @@ def init():
 def run():
     """Populates all tables in db with most recent data"""
     with app.app_context():
-        sw = app.config['SW']
-        utils.run_or_schedule(populate, sw, utils.exception_handler)
+        args = (config.RECIPIENT, app.config.get('LOGFILE'), __title__)
+        exception_handler = swutils.ExceptionHandler(*args).handler
+        kwargs = merge([app.config, {'models': models}])
+        job = partial(swutils.populate, utils.gen_data, db.engine, **kwargs)
+        swutils.run_or_schedule(job, app.config['SW'], exception_handler)
+
+
+@manager.option(
+    '-s', '--stag', help='upload to staging site', action='store_true')
+def upload(stag=False):
+    """Upload files to HDX"""
+    call([p.join(_basedir, 'bin', 'upload'), 'stag' if stag else 'prod'])
+
+
+@manager.option(
+    '-s', '--stag', help='upload to staging site', action='store_true')
+def update(stag=False):
+    """Update dataset metadata"""
+    call([p.join(_basedir, 'bin', 'update'), 'stag' if stag else 'prod'])
 
 
 if __name__ == '__main__':
