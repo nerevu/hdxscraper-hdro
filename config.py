@@ -1,23 +1,38 @@
+# -*- coding: utf-8 -*-
+# vim: sw=4:ts=4:expandtab
+
+"""
+config
+~~~~~~
+
+Provides app configuration settings
+"""
+
+from __future__ import (
+    absolute_import, division, print_function, with_statement,
+    unicode_literals)
+
 from os import path as p
 
-# module vars
-_basedir = p.dirname(__file__)
-_parentdir = p.dirname(_basedir)
-_db_name = 'scraperwiki.sqlite'
+BASEDIR = p.dirname(__file__)
+PARENTDIR = p.dirname(BASEDIR)
+DB_NAME = 'scraperwiki.sqlite'
+RECIPIENT = 'reubano@gmail.com'
 
 
-# configuration
 class Config(object):
     BASE_URL = 'http://ec2-52-1-168-42.compute-1.amazonaws.com'
-    DATA_LOCATIONS = {
-        'country_names': 'country_name',
-        'ind_values': 'indicator_value.item',
-        'ind_names': 'indicator_name',
-    }
+    TABLES = [
+        {
+            'name': 'hdro',
+            'rid': 'rid',
+            'country_names': 'country_name',
+            'ind_values': 'indicator_value.item',
+            'ind_names': 'indicator_name'}]
 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % p.join(_basedir, _db_name)
-    TABLE = 'HDRO'
-    RECORD_ID = 'rid'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % p.join(BASEDIR, DB_NAME)
+    LOGFILE = p.join(BASEDIR, 'http', 'log.txt')
+    API_LIMIT = 1000
     SW = False
     DEBUG = False
     TESTING = False
@@ -29,7 +44,8 @@ class Config(object):
 class Scraper(Config):
     PROD = True
     SW = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % p.join(_parentdir, _db_name)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % p.join(PARENTDIR, DB_NAME)
+    LOGFILE = p.join(PARENTDIR, 'http', 'log.txt')
 
 
 class Production(Config):
