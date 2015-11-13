@@ -16,7 +16,7 @@ from app import db
 from savalidation import ValidationMixin
 
 
-class HDRO(db.Model, ValidationMixin):
+class Hdro(db.Model, ValidationMixin):
     # auto keys
     id = db.Column(db.Integer, primary_key=True)
     utc_created = db.Column(db.DateTime, nullable=False, default=dt.utcnow())

@@ -12,6 +12,6 @@ SAValidation==0.3.0
 SQLAlchemy==1.0.6
 tabutils==0.18.1
 pkutils==0.6.1
-swutils==0.8.2
+swutils==0.9.0
 ckanny==0.14.0
 -e git+https://github.com/agsimeonov/grequests@master#egg=grequests
