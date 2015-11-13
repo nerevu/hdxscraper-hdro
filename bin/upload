@@ -14,7 +14,7 @@ fi
 
 BASE="http://data.undp.org/resource"
 PACKAGE="human-development-index-trends"
-CSV="https://ds-ec2.scraperwiki.com/gzk5p3z/tbb2ribak1ktkqp/cgi-bin/csv/HDRO.csv"
+CSV="https://ds-ec2.scraperwiki.com/gzk5p3z/tbb2ribak1ktkqp/cgi-bin/csv/hdro.csv"
 NAME="human-development-report-office-indicators"
 OID="undp-human-development-reports-office"
 TSOURCE="United Nations Development Programme"
