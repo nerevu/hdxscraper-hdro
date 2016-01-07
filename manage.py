@@ -8,14 +8,15 @@ import swutils
 import config
 
 from subprocess import call
-from datetime import datetime as dt
 from functools import partial
 
 from flask import current_app as app
 from flask.ext.script import Manager
 from tabutils.process import merge
+from slugify import slugify
 
-from app import create_app, db, utils, models, __title__
+from app import create_app, db, utils, __title__
+from app.models import BaseMixin
 
 manager = Manager(create_app)
 manager.add_option('-m', '--mode', default='Development')
@@ -82,26 +83,19 @@ def setup():
         createdb()
 
 
-@manager.option('-s', '--start', help='the start year', default=1980)
-@manager.option('-e', '--end', help='the end year', default=dt.now().year)
-def init(start, end):
-    """Initializes db with historical data"""
-    with app.app_context():
-        extra = {'models': models, 'end': end, 'start': start}
-        kwargs = merge([app.config, extra])
-        job = partial(swutils.populate, utils.gen_data, db.engine, **kwargs)
-        utils.run_or_schedule(job, False, utils.exception_handler)
-
-
 @manager.command
 def run():
     """Populates all tables in db with most recent data"""
     with app.app_context():
         args = (config.RECIPIENT, app.config.get('LOGFILE'), __title__)
         exception_handler = swutils.ExceptionHandler(*args).handler
-        kwargs = merge([app.config, {'models': models}])
-        job = partial(swutils.populate, utils.gen_data, db.engine, **kwargs)
-        swutils.run_or_schedule(job, app.config['SW'], exception_handler)
+        extra = {
+            'mixin': BaseMixin, 'get_name': partial(slugify, separator='_'),
+            'fetch': utils.fetch}
+        kwargs = merge([app.config, extra])
+        job = partial(swutils.populate, db.engine, **kwargs)
+        job()
+        # swutils.run_or_schedule(job, app.config['SW'], exception_handler)
 
 
 @manager.option(
@@ -116,7 +110,6 @@ def upload(stag=False):
 def update(stag=False):
     """Update dataset metadata"""
     call([p.join(_basedir, 'bin', 'update'), 'stag' if stag else 'prod'])
-
 
 if __name__ == '__main__':
     manager.run()
