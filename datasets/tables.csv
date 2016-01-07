@@ -1,0 +1,20 @@
+title,table,start,end
+Human Development Index (HDI),hdi_human_development_index_hdig_value,1/1/2012,12/31/2013
+Inequality-Adjusted Human Development Index,ihdi_inequality_adjusted_hdi_value,1/1/2003,12/31/2013
+Gender Inequality Index,gii_gender_inequality_index_value,1/1/2005,12/31/2015
+Gender Development Index (Female to male ratio of HDI),gdi_female_to_male_ratio_of_hdi_geometric_gdi,1/1/2000,12/31/2013
+Multidimensional Poverty Index,mpi_multidimensional_poverty_index_revised,1/1/2005,12/31/2013
+Health Index,hdi_health_index,1/1/2008,12/31/2012
+Total Expenditure on health (% of GDP),expenditure_on_health_total_of_gdp,1/1/2003,12/31/2015
+Education index,hdi_education_index,1/1/2003,12/31/2012
+Population in severe poverty (headcount),mpi_population_in_severe_poverty_headcount,1/1/2000,12/31/2015
+
+
+
+
+
+
+
+
+
+

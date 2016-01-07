@@ -7,7 +7,7 @@
 hdxscraper-hdro operates in the following way:
 
 - Downloads `Human Development Statistical` json data
-- Filters for data withing given data range or, if none is given, within the past year
+- Filters for data within a given data range or, if none is given, within the past year
 - Places the resulting data into a database table
 
 With hdxscraper-hdro, you can

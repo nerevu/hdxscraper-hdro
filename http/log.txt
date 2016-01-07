@@ -1,0 +1,40 @@
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/137506 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/137506 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/137506 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/138806 HTTP/1.1" 200 7385
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/68606 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/137906 HTTP/1.1" 200 7579
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/38406 HTTP/1.1" 200 4608
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/72206 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/53906 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/103706 HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): ec2-52-1-168-42.compute-1.amazonaws.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /version/1/indicator_id/101006 HTTP/1.1" 200 4315
+DEBUG:populate:Inserted 50 records into table `expenditure_on_health_total_of_gdp`.
+DEBUG:populate:Success! Inserted 50 records into table `expenditure_on_health_total_of_gdp`.
+DEBUG:populate:Inserted 50 records into table `gdi_female_to_male_ratio_of_hdi_geometric_gdi`.
+DEBUG:populate:Success! Inserted 50 records into table `gdi_female_to_male_ratio_of_hdi_geometric_gdi`.
+DEBUG:populate:Inserted 50 records into table `gii_gender_inequality_index_value`.
+DEBUG:populate:Success! Inserted 50 records into table `gii_gender_inequality_index_value`.
+DEBUG:populate:Inserted 50 records into table `hdi_education_index`.
+DEBUG:populate:Success! Inserted 50 records into table `hdi_education_index`.
+DEBUG:populate:Inserted 50 records into table `hdi_health_index`.
+DEBUG:populate:Success! Inserted 50 records into table `hdi_health_index`.
+DEBUG:populate:Inserted 50 records into table `hdi_human_development_index_hdig_value`.
+DEBUG:populate:Success! Inserted 50 records into table `hdi_human_development_index_hdig_value`.
+DEBUG:populate:Inserted 50 records into table `ihdi_inequality_adjusted_hdi_value`.
+DEBUG:populate:Success! Inserted 50 records into table `ihdi_inequality_adjusted_hdi_value`.
+DEBUG:populate:Inserted 50 records into table `mpi_multidimensional_poverty_index_revised`.
+DEBUG:populate:Success! Inserted 50 records into table `mpi_multidimensional_poverty_index_revised`.
+DEBUG:populate:Inserted 50 records into table `mpi_population_in_severe_poverty_headcount`.
+DEBUG:populate:Success! Inserted 50 records into table `mpi_population_in_severe_poverty_headcount`.

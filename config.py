@@ -21,15 +21,9 @@ RECIPIENT = 'reubano@gmail.com'
 
 
 class Config(object):
-    BASE_URL = 'http://ec2-52-1-168-42.compute-1.amazonaws.com'
-    TABLES = [
-        {
-            'name': 'hdro',
-            'rid': 'rid',
-            'country_names': 'country_name',
-            'ind_values': 'indicator_value.item',
-            'ind_names': 'indicator_name'}]
-
+    BASE_URL = 'http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/{}'
+    KEY = 'indicator'
+    INDICATORS = [137506, 138806, 68606, 137906, 38406, 72206, 53906, 103706, 101006]
     SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % p.join(BASEDIR, DB_NAME)
     LOGFILE = p.join(BASEDIR, 'http', 'log.txt')
     API_LIMIT = 1000

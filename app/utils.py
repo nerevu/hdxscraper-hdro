@@ -13,42 +13,31 @@ from __future__ import (
     absolute_import, division, print_function, with_statement,
     unicode_literals)
 
-import grequests
-
-from datetime import datetime as dt
-from ijson import items
+import requests
 
 
-def gen_data(start_year=None, end_year=None, **kwargs):
-    """Generates historical or current data"""
-    # url = 'file://%s' % p.join(_parentdir, 'data.json')
-    end_year = int(end_year or dt.now().year)
-    start_year = start_year or end_year - 1
-    url = kwargs['BASE_URL']
-    headers = {'Content-Type': 'application/json'}
+def gen_records(**kwargs):
+    """Fetches json from url"""
+    for ind_id in kwargs['INDICATORS']:
+        url = kwargs['BASE_URL'].format(ind_id)
+        headers = {'Content-Type': 'application/json'}
+        r = requests.get(url, headers=headers)
 
-    rs = [grequests.get(url, stream=True, headers=headers) for _ in xrange(3)]
-    data = [r.raw for r in grequests.map(rs, stream=True, size=3)]
+        country_names = r.json()['country_name']
+        ind_name = r.json()['indicator_name']
+        ind_values = r.json()['indicator_value']
 
-    country_names = items(data[0], kwargs['country_names']).next()
-    ind_names = items(data[1], kwargs['ind_names']).next()
-    ind_items = items(data[2], kwargs['ind_values'])
+        for country_code, ind_code, year, value in ind_values:
+            record = {
+                'indicator': ind_name[ind_code],
+                'indicator_code': ind_code,
+                'country_code': country_code,
+                'country': country_names[country_code],
+                'value': value,
+                'year': year,
+            }
 
-    for country_code, ind_code, year, ind_value in ind_items:
-        year, ind_value = int(year), float(ind_value)
+            yield record
 
-        if start_year and year < start_year:
-            continue
-
-        if end_year and year > end_year:
-            continue
-
-        record = {
-            'rid': '%s-%s-%s' % (ind_code, country_code, year),
-            'country': country_names[country_code],
-            'indicator': ind_names[ind_code],
-            'value': ind_value,
-            'year': year,
-        }
-
-        yield record
+def fetch(**kwargs):
+    return {'records': gen_records(**kwargs)}
