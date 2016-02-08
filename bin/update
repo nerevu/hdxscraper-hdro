@@ -31,7 +31,7 @@ echo "Updating data on $URL..."
 {
   read
   while read -r line || [[ -n "$line" ]]; do
-    IFS=$'\t'
+    IFS=','
     ROW=($line)
     slugify "${ROW[0]}"
 
@@ -45,4 +45,4 @@ echo "Updating data on $URL..."
       -r "$URL" \
       "$SLUG"
   done
-} < "datasets/tables.tsv"
+} < "datasets/tables.csv"
