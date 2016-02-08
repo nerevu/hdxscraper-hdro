@@ -6,7 +6,7 @@
 
 hdxscraper-hdro operates in the following way:
 
-- Downloads `Human Development Statistical` json data
+- Downloads `Human Development Statistical` json data [api](http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/)
 - Filters for data within a given data range or, if none is given, within the past year
 - Places the resulting data into a database table
 
